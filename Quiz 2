@@ -1,44 +1,62 @@
-# Clase base
-class Producto:
-    def __init__(self, nombre, precio):
-        self.nombre = nombre
-        self.precio = precio
+import java.util.ArrayList;
 
-    def mostrar_info(self):
-        print(f"Producto: {self.nombre}, Precio: ${self.precio}")
+class Producto {
+    protected String nombre;
+    protected double precio;
 
-# Clase derivada
-class Libro(Producto):
-    def __init__(self, nombre, autor, precio, cantidad):
-        super().__init__(nombre, precio)
-        self.autor = autor
-        self.cantidad = cantidad
+    public Producto(String nombre, double precio) {
+        this.nombre = nombre;
+        this.precio = precio;
+    }
 
-    # Sobrescribir método
-    def mostrar_info(self):
-        print(f"Libro: {self.nombre}, Autor: {self.autor}, Precio: ${self.precio}, Cantidad: {self.cantidad}")
+    public void mostrarInfo() {
+        System.out.println("Producto: " + nombre + ", Precio: $" + precio);
+    }
+}
 
-    def valor_total(self):
-        return self.precio * self.cantidad
+class Libro extends Producto {
+    private String autor;
+    private int cantidad;
 
-# Programa principal
-def main():
-    libros = [
-        Libro("Cien años de soledad", "Gabriel Garcia Marquez", 55000, 10),
-        Libro("La hojarasca", "Gabriel Garcia Marquez", 60000, 3),
-        Libro("El coronel no tiene quien le escriba", "Gabriel Garcia Marquez", 65000, 0)
-    ]
+    public Libro(String nombre, String autor, double precio, int cantidad) {
+        super(nombre, precio);
+        this.autor = autor;
+        this.cantidad = cantidad;
+    }
 
-    valor_inventario = 0
-    print("Listado de libros en inventario:")
-    for libro in libros:
-        libro.mostrar_info()
-        valor_inventario += libro.valor_total()
-        if libro.cantidad < 5:
-            print("  -> Atención: Stock bajo!")
+    @Override
+    public void mostrarInfo() {
+        System.out.println("Libro: " + nombre + ", Autor: " + autor +
+                           ", Precio: $" + precio + ", Cantidad: " + cantidad );
+    }
 
-    print(f"\nValor total del inventario: ${valor_inventario}")
+    public double valorTotal() {
+        return precio * cantidad;
+    }
 
-if __name__ == "__main__":
-    main()
+    public int getCantidad() {
+        return cantidad;
+    }
+}
 
+public class Main {
+    public static void main(String[] args) {
+        ArrayList<Libro> libros = new ArrayList<>();
+
+        libros.add(new Libro("Cien años de soledad", "Gabriel Garcia Marquez", 55000, 10));
+        libros.add(new Libro("La hojarasca", "Gabriel Garcia Marquez", 60000, 3));
+        libros.add(new Libro("El coronel no tiene quien le escriba", "Gabriel Garcia Marquez", 65000, 0));
+
+        double valorInventario = 0;
+        System.out.println("Listado de libros en inventario:");
+        for (Libro libro : libros) {
+            libro.mostrarInfo();
+            valorInventario += libro.valorTotal();  
+            if (libro.getCantidad() < 5) {
+                System.out.println("  -> Atención: Stock bajo!");
+            }
+        }
+
+        System.out.println("\nValor total del inventario: $" + valorInventario);
+    }
+}
